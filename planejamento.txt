@@ -1,0 +1,61 @@
+Será um ecommerce de equipamentos de informática, com diversos departamentos como 
+
+Computadores prontos
+  Home office
+  gamer
+Hardware
+  Processadores
+  Placa-mãe
+  Memória
+  Armazenamento
+    HD
+    SSD
+  Placa de vídeo
+  Fonte
+Gabinetes
+Periféricos
+  Mouse
+  Mousepad
+  Teclado
+  Aúdio
+Monitores
+Cabos e acessórios
+Refrigeração
+
+Este menu será agrupado por fabricante/marca.
+
+A página principal irá exibir caroulssel com alguns banners, os itens mais vendidos e pesquisa mais populares, além de dois links para a mesma página de computadores prontos:
+Home  office e gamer
+
+A aplicação irá ter página para cadastro de usuário, minha conta, carrinho, atendimento
+
+Página de cadastro de usuário:
+  Primeiro nome
+  Sobrenome
+  Data de nascimento 
+  CPF
+  Celular
+  Email
+  Email novamente
+  Senha (exibir senha)
+  Senha novamente (exibir senha)
+
+Após criar o cadastro, enviar um email ou sms para confirmação (ver como fazer).
+
+Página de editar perfil
+  Meus dados
+  Trocar senha (com confirmação de email ou sms)
+  Meus pedidos
+  Favoritos (?)
+  Meus tickets
+  Meu endereço
+  Sair da conta
+
+Ao clicar em carrinho, vai abrir um modal pela direita exibindo cards com os itens do carrinho,
+cada card vai ter a foto do item, titulo e detalhes, quantidade ( - 1 +) podendo aumentar ou diminuir (chegando a zero, confirma remoção e remove o item),
+um x no topo do card para remover o item também (ou sem o X ja que vai poder remover na quantidade).
+Se tiver muitos itens, cria uma barra de rolagem com os itens.
+Penultimo card com calculo de frete e o ultimo card com subtotal (valor total e outro valor com desconto em boleto ou pix)
+Abaixo botões para continuar comprando ou finalizar pedido (impossivel fechar sem calcular frete)
+
+Página de atendimento (ver depois)

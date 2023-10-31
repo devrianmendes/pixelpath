@@ -1,0 +1,30 @@
+yarn init -y
+    criando o package.json
+
+yarn add typescript -D
+    instalado o typescript local em desenvolvimento
+
+yarn add express
+yarn add @types/express    
+    instalando express e suas tipagens (framework nodejs para criação de servidores)
+
+yarn tsc --init
+    criando o arquivo de configurações do typescript tsconfig.json
+
+Após escrever o servidor conforme documentação do express e criar o arquivos de rotas,
+instalei o ts-node-dev para o nodejs entender os imports (não suporta por padrão), além do livereload
+Depois criei um script no package.json para rodar o server.ts (dev)
+
+yarn add cors
+    instalado cors para liberar o acesso por qualquer ip
+
+yarn add prisma -D
+yarn add @prisma/client
+    instalado o prisma e prisma client (não sei a diferença entre os dois)
+    Parece que o prisma client é o responsavel por fazer o CRUD no dba
+
+npx prisma init 
+    Após a instalação dos pacotes, esse comando criou a pasta prisma com o arquivo schema.prisma, com informações do db, tabelas criadas
+    e também o arquivo .env na raiz do projeto
+
+Depois disso, dentro da pasta src, criei uma pasta prisma e dentro um arquivo index.ts, criando, executando e exportando o client primsa.
