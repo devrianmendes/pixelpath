@@ -1,5 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
+//yarn prisma migrate dev
 
 generator client {
   provider = "prisma-client-js"
@@ -9,3 +10,164 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+//PRIMARY TABLES
+model Costumer {
+  id String @db.VarChar @id @default(uuid())
+  name String @db.VarChar
+  surname String @db.VarChar
+  cpf Int @db.Integer
+  mobile BigInt @db.BigInt
+  email String @db.VarChar
+  password String @db.VarChar
+  createdAt DateTime @db.Date @default(now())
+  updatedAt DateTime @db.Date @default(now())
+
+  addresses ShippingAddress[]
+  paymentMethods PaymentMethod[]
+  orders Order[]
+  @@map("costumers")
+}
+
+model Product {
+  id String @db.VarChar @id @default(uuid())
+  name String @db.VarChar
+  description String @db.VarChar
+  costPrice Decimal @db.Decimal 
+  sellPrice Decimal @db.Decimal
+  banner String @db.VarChar
+  quantity Int @db.Integer
+  published Boolean @db.Boolean
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime @default(now())
+
+  @@map("products")
+  salesInfos SalesInfo[]
+  orders Cart[] //A order aqui é opcional, pois um produto pode existir sem pertencer a uma ordem. Como fica?
+}
+
+model Order {
+  id String @db.VarChar @id @default(uuid())
+  total Decimal @db.Decimal
+  status String @db.VarChar
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  costumers Costumer @relation(fields: [costumerId], references: [id])
+  costumerId String @db.VarChar
+
+  shippingAdresses ShippingAddress @relation(fields: [shippingAddressId], references: [id])
+  shippingAddressId String @db.VarChar
+
+  paymentMethods PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+  paymentMethodId String @db.VarChar
+
+  products Cart[]
+  @@map("orders")
+
+}
+
+//SECONDARY TABLES
+model Address {
+  id String @db.VarChar @id @default(uuid())
+  address String @db.VarChar
+  number String @db.VarChar
+  city String @db.VarChar
+  state String @db.VarChar
+  cep Int @db.Integer
+
+  costumers ShippingAddress[]
+  @@map("addresses")
+}
+
+model PaymentMethod {
+  id String @db.VarChar @id @default(uuid()) 
+  provider String @db.VarChar
+  number String @db.VarChar
+  expireDate DateTime @db.Date
+  isDefault Boolean @db.Boolean
+  createdAt DateTime @default(now())
+
+  costumers Costumer @relation(fields: [costumerId], references: [id])
+  costumerId String @db.VarChar
+
+  paymentTypes PaymentType @relation(fields: [paymentType], references: [type])
+  paymentType String @db.VarChar
+
+  orders Order[]
+  @@map("paymentMethods")
+
+}
+
+model PaymentType {
+  type String @db.VarChar @id
+  paymentMethods PaymentMethod[]
+}
+
+model ProductDetail {
+  id String @db.VarChar @id @default(uuid())
+  weight Int @db.Integer
+  height Int @db.Integer
+  width Int @db.Integer
+  length Int @db.Integer
+
+  @@map("productDetails")
+}
+
+model SalesInfo {
+  sales Int @db.Integer
+
+  product Product @relation(fields: [productId], references: [id])
+  productId String @db.VarChar @id
+
+  @@map("salesInfos")
+}
+
+model Category {
+  id String @db.VarChar @id @default(uuid())
+  name String @db.VarChar
+
+  @@map("categories")
+}
+
+model Promotion {
+  id String @db.VarChar @id @default(uuid())
+  name String @db.VarChar
+  description String @db.VarChar
+  discoutRate Int @db.Integer
+  startDate DateTime @db.Date
+  endDate DateTime @db.Date
+  createdAt DateTime
+  updatedAt DateTime
+
+  @@map("promotions")
+}
+
+//RELATIONS
+model ShippingAddress {
+  id String @id @db.Char(2) @default(uuid())
+  isDefault Boolean @db.Boolean
+
+  costumerId String @db.VarChar
+  costumer Costumer @relation(fields: [costumerId], references: [id])
+
+  addressId String @db.VarChar
+  address Address @relation(fields: [addressId], references: [id])
+
+  orders Order[]
+
+  @@map("shippingAddresses")
+}
+
+model Cart { //não sei se é um nome apropriado
+  id String @id @db.VarChar @default(uuid())
+
+  productId String @db.VarChar
+  products Product @relation(fields: [productId], references: [id])
+
+  orderId String @db.VarChar
+  orders Order @relation(fields: [orderId], references: [id])
+
+  @@map("carts")
+}
+
