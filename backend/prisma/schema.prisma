@@ -24,7 +24,7 @@ model Costumer {
   updatedAt DateTime @db.Date @default(now())
 
   addresses ShippingAddress[]
-  paymentMethods PaymentMethod[]
+  paymentDatas PaymentData[]
   orders Order[]
   @@map("costumers")
 }
@@ -59,8 +59,8 @@ model Order {
   shippingAdresses ShippingAddress @relation(fields: [shippingAddressId], references: [id])
   shippingAddressId String @db.VarChar
 
-  paymentMethods PaymentMethod @relation(fields: [paymentMethodId], references: [id])
-  paymentMethodId String @db.VarChar
+  paymentDatas PaymentData @relation(fields: [paymentDataId], references: [id])
+  paymentDataId String @db.VarChar
 
   products Cart[]
   @@map("orders")
@@ -80,7 +80,7 @@ model Address {
   @@map("addresses")
 }
 
-model PaymentMethod {
+model PaymentData {
   id String @db.VarChar @id @default(uuid()) 
   provider String @db.VarChar
   number String @db.VarChar
@@ -91,17 +91,17 @@ model PaymentMethod {
   costumers Costumer @relation(fields: [costumerId], references: [id])
   costumerId String @db.VarChar
 
-  paymentTypes PaymentType @relation(fields: [paymentType], references: [type])
-  paymentType String @db.VarChar
+  paymentMethods paymentMethod @relation(fields: [paymentMethodId], references: [type])
+  paymentMethodId String @db.VarChar
 
   orders Order[]
-  @@map("paymentMethods")
+  @@map("paymentDatas")
 
 }
 
-model PaymentType {
+model paymentMethod {
   type String @db.VarChar @id
-  paymentMethods PaymentMethod[]
+  paymentDatas PaymentData[]
 }
 
 model ProductDetail {
@@ -159,7 +159,7 @@ model ShippingAddress {
   @@map("shippingAddresses")
 }
 
-model Cart { //não sei se é um nome apropriado
+model Cart { //não sei se é o nome apropriado
   id String @id @db.VarChar @default(uuid())
 
   productId String @db.VarChar
