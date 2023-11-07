@@ -11,21 +11,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//PRIMARY TABLES
 model Costumer {
   id String @db.VarChar @id @default(uuid())
   name String @db.VarChar
   surname String @db.VarChar
-  cpf String @db.VarChar
-  mobile String @db.VarChar
+  cpf Int @db.Integer
+  mobile BigInt @db.BigInt
   email String @db.VarChar
   password String @db.VarChar
   createdAt DateTime @db.Date @default(now())
   updatedAt DateTime @db.Date @default(now())
 
-  addresses Address[]
-  paymentData PaymentData[]
+  addresses ShippingAddress[]
+  paymentDatas PaymentData[]
   orders Order[]
-  cart Cart[]
   @@map("costumers")
 }
 
@@ -37,18 +37,13 @@ model Product {
   sellPrice Decimal @db.Decimal
   banner String @db.VarChar
   quantity Int @db.Integer
-  discountRate Int @db.Integer
   published Boolean @db.Boolean
   createdAt DateTime @default(now()) 
   updatedAt DateTime @default(now())
 
-  productDetails ProductDetails[]
-  productSales SalesInfo[]
-  cart Cart[]
-
-  categoryId String @db.VarChar
-  category Category @relation(fields: [categoryId], references: [id])
   @@map("products")
+  salesInfos SalesInfo[]
+  orders Cart[] //A order aqui é opcional, pois um produto pode existir sem pertencer a uma ordem. Como fica?
 }
 
 model Order {
@@ -61,32 +56,18 @@ model Order {
   costumers Costumer @relation(fields: [costumerId], references: [id])
   costumerId String @db.VarChar
 
-  Addresses Address @relation(fields: [addressId], references: [id])
-  addressId String @db.VarChar
+  shippingAdresses ShippingAddress @relation(fields: [shippingAddressId], references: [id])
+  shippingAddressId String @db.VarChar
 
-  paymentData PaymentData @relation(fields: [paymentDataId], references: [id])
+  paymentDatas PaymentData @relation(fields: [paymentDataId], references: [id])
   paymentDataId String @db.VarChar
 
-  cart Cart[]
-
+  products Cart[]
   @@map("orders")
+
 }
 
-model Cart {
-  id String @id @db.VarChar @default(uuid())
-  total Decimal @db.Decimal
-
-  productId String @db.VarChar
-  products Product @relation(fields: [productId], references: [id])
-  
-  orderId String @db.VarChar
-  order Order @relation(fields: [orderId], references: [id])
-
-  costumerId String @db.VarChar
-  costumer Costumer @relation(fields: [costumerId], references: [id])
-}
-
-//secondary tables
+//SECONDARY TABLES
 model Address {
   id String @db.VarChar @id @default(uuid())
   address String @db.VarChar
@@ -95,11 +76,7 @@ model Address {
   state String @db.VarChar
   cep Int @db.Integer
 
-  costumerId String @db.VarChar
-  costumer Costumer @relation(fields: [costumerId], references: [id])
-
-  orders Order[]
-
+  costumers ShippingAddress[]
   @@map("addresses")
 }
 
@@ -127,23 +104,18 @@ model paymentMethod {
   paymentDatas PaymentData[]
 }
 
-model ProductDetails {
+model ProductDetail {
   id String @db.VarChar @id @default(uuid())
   weight Int @db.Integer
   height Int @db.Integer
   width Int @db.Integer
   length Int @db.Integer
-  manufacturer String @db.VarChar
-
-  productId String @db.VarChar
-  products Product @relation(fields: [productId], references: [id])
 
   @@map("productDetails")
 }
 
 model SalesInfo {
   sales Int @db.Integer
-  createdAt DateTime @default(now())
 
   product Product @relation(fields: [productId], references: [id])
   productId String @db.VarChar @id
@@ -155,12 +127,6 @@ model Category {
   id String @db.VarChar @id @default(uuid())
   name String @db.VarChar
 
-  parentCategoryId String?
-  parentCategory Category? @relation("parentCategories",fields: [parentCategoryId], references: [id])
-  childCategory Category[] @relation("parentCategories")
-
-  products Product[]
-  promotions CategoryPromotion[]
   @@map("categories")
 }
 
@@ -171,20 +137,37 @@ model Promotion {
   discoutRate Int @db.Integer
   startDate DateTime @db.Date
   endDate DateTime @db.Date
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt DateTime
+  updatedAt DateTime
 
-  categories CategoryPromotion[]
   @@map("promotions")
 }
 
-model CategoryPromotion {
-  id String @db.VarChar @id @default(uuid())
-  name String @db.VarChar
+//RELATIONS
+model ShippingAddress {
+  id String @id @db.Char(2) @default(uuid())
+  isDefault Boolean @db.Boolean
 
-  categoryId String @db.VarChar
-  categories Category @relation(fields: [categoryId], references: [id])
+  costumerId String @db.VarChar
+  costumer Costumer @relation(fields: [costumerId], references: [id])
 
-  promotionId String @db.VarChar
-  promotions Promotion @relation(fields: [promotionId], references: [id])
+  addressId String @db.VarChar
+  address Address @relation(fields: [addressId], references: [id])
+
+  orders Order[]
+
+  @@map("shippingAddresses")
 }
+
+model Cart { //não sei se é o nome apropriado
+  id String @id @db.VarChar @default(uuid())
+
+  productId String @db.VarChar
+  products Product @relation(fields: [productId], references: [id])
+
+  orderId String @db.VarChar
+  orders Order @relation(fields: [orderId], references: [id])
+
+  @@map("carts")
+}
+
