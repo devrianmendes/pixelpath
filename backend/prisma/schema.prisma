@@ -22,6 +22,9 @@ model Costumer {
   createdAt DateTime @db.Date @default(now())
   updatedAt DateTime @db.Date @default(now())
 
+  roleId String @db.VarChar
+  role Role @relation(fields: [roleId], references: [id])
+
   addresses Address[]
   paymentData PaymentData[]
   orders Order[]
@@ -84,9 +87,20 @@ model Cart {
 
   costumerId String @db.VarChar
   costumer Costumer @relation(fields: [costumerId], references: [id])
+
+  @@map("carts")
 }
 
 //secondary tables
+
+model Role {
+  id String @db.VarChar @id @default(uuid())
+  name String @db.VarChar
+
+  costumers Costumer[]
+  @@map("roles")
+}
+
 model Address {
   id String @db.VarChar @id @default(uuid())
   address String @db.VarChar
@@ -114,7 +128,7 @@ model PaymentData {
   costumers Costumer @relation(fields: [costumerId], references: [id])
   costumerId String @db.VarChar
 
-  paymentMethods paymentMethod @relation(fields: [paymentMethodId], references: [type])
+  paymentMethods PaymentMethod @relation(fields: [paymentMethodId], references: [type])
   paymentMethodId String @db.VarChar
 
   orders Order[]
@@ -122,7 +136,7 @@ model PaymentData {
 
 }
 
-model paymentMethod {
+model PaymentMethod {
   type String @db.VarChar @id
   paymentDatas PaymentData[]
 }
@@ -155,7 +169,7 @@ model Category {
   id String @db.VarChar @id @default(uuid())
   name String @db.VarChar
 
-  parentCategoryId String?
+  parentCategoryId String? @db.VarChar
   parentCategory Category? @relation("parentCategories",fields: [parentCategoryId], references: [id])
   childCategory Category[] @relation("parentCategories")
 
@@ -187,4 +201,6 @@ model CategoryPromotion {
 
   promotionId String @db.VarChar
   promotions Promotion @relation(fields: [promotionId], references: [id])
+
+  @@map("categoryPromotions")
 }

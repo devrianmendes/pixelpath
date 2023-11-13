@@ -13,8 +13,8 @@ interface CreateUser {
 class CreateUserService {
   async execute({name, surname, cpf, mobile, email, password}: CreateUser) {
     
-    if(!email) {
-      throw new Error("Email não informado ou incorreto.")
+    if(!name || !surname || !cpf || !mobile || !email || !password ) {
+      throw new Error("Dados faltantes.")
     }
 
     const emailAlreadyExist = await prismaClient.costumer.findFirst({
