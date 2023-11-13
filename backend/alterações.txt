@@ -1,0 +1,5 @@
+revisar todos os tipos de dados do banco de dados
+incluir isDefault na tabela address
+incluir dados do productdetail ao createProduct
+alterar o campo largura, altura, compriment e peso para float
+incluir id no paymentMethod
