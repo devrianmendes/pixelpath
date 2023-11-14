@@ -2,18 +2,19 @@ import prismaClient from "../../prisma";
 import {hash} from 'bcryptjs';
 
 interface CreateUser {
-  name: string
-  surname: string
-  cpf: string
-  mobile: string
-  email: string
-  password: string
+  name: string;
+  surname: string;
+  cpf: string;
+  mobile: string;
+  email: string;
+  password: string;
+  role: string;
 }
 
 class CreateUserService {
-  async execute({name, surname, cpf, mobile, email, password}: CreateUser) {
+  async execute({name, surname, cpf, mobile, email, password, role}: CreateUser) {
     
-    if(!name || !surname || !cpf || !mobile || !email || !password ) {
+    if(!name || !surname || !cpf || !mobile || !email || !password || !role ) {
       throw new Error("Dados faltantes.")
     }
 
@@ -36,11 +37,14 @@ class CreateUserService {
         cpf: cpf,
         mobile: mobile,
         email: email,
-        password: passwordHash
+        password: passwordHash,
+        role: role
       },
       select: {
         id: true,
-        name: true
+        name: true,
+        email: true,
+        role: true
       }
     })
     return user;

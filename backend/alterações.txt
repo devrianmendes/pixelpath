@@ -1,5 +1,14 @@
-revisar todos os tipos de dados do banco de dados
-incluir isDefault na tabela address
-incluir dados do productdetail ao createProduct
-alterar o campo largura, altura, compriment e peso para float
-incluir id no paymentMethod
+incluir isDefault na tabela address - feito
+incluir dados do productdetail ao createProduct - feito
+alterar o campo largura, altura, compriment e peso para float - feito
+revisar todos os tipos de dados do banco de dados - feito
+
+
+
+
+criada a tabela role que irá definir permissões (será necessário injetar a role no token) - feito
+incluir id no paymentMethod - o type tá como id, vamo ver como fica
+
+
+
+
