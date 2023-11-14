@@ -15,6 +15,7 @@ model Costumer {
   id String @db.VarChar @id @default(uuid())
   name String @db.VarChar
   surname String @db.VarChar
+  role String @db.VarChar
   cpf String @db.VarChar
   mobile String @db.VarChar
   email String @db.VarChar
@@ -22,7 +23,6 @@ model Costumer {
   createdAt DateTime @db.Date @default(now())
   updatedAt DateTime @db.Date @default(now())
 
-  role String @db.VarChar
   roles Role @relation(fields: [role], references: [name])
 
   addresses Address[]
@@ -36,12 +36,15 @@ model Product {
   id String @db.VarChar @id @default(uuid())
   name String @db.VarChar
   description String @db.VarChar
+  categoryId String @db.VarChar
   costPrice Decimal @db.Decimal(7,2) 
   sellPrice Decimal @db.Decimal(7,2)
   banner String @db.VarChar
   quantity Int @db.Integer
   discountRate Int @db.Integer
   published Boolean @db.Boolean
+  createdBy String @db.VarChar
+  updatedBy String @db.VarChar
   createdAt DateTime @default(now()) 
   updatedAt DateTime @default(now())
 
@@ -49,26 +52,23 @@ model Product {
   productSales SalesInfo[]
   cart Cart[]
 
-  categoryId String @db.VarChar
   categories Category @relation(fields: [categoryId], references: [id])
   @@map("products")
 }
 
 model Order {
   id String @db.VarChar @id @default(uuid())
+  costumerId String @db.VarChar
+  addressId String @db.VarChar
+  paymentDataId String @db.VarChar
   total Decimal @db.Decimal(7,2)
   status String @db.VarChar
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
   costumers Costumer @relation(fields: [costumerId], references: [id])
-  costumerId String @db.VarChar
-
   Addresses Address @relation(fields: [addressId], references: [id])
-  addressId String @db.VarChar
-
   paymentData PaymentData @relation(fields: [paymentDataId], references: [id])
-  paymentDataId String @db.VarChar
 
   cart Cart[]
 
@@ -78,15 +78,15 @@ model Order {
 //secondary tables
 model Cart {
   id String @id @db.VarChar @default(uuid())
+  costumerId String @db.VarChar
+  productId String @db.VarChar
+  orderId String @db.VarChar
   total Decimal @db.Decimal(7,2)
 
-  productId String @db.VarChar
   products Product @relation(fields: [productId], references: [id])
   
-  orderId String @db.VarChar
   orders Order @relation(fields: [orderId], references: [id])
 
-  costumerId String @db.VarChar
   costumers Costumer @relation(fields: [costumerId], references: [id])
 
   @@map("carts")
@@ -102,6 +102,7 @@ model Role {
 
 model Address {
   id String @db.VarChar @id @default(uuid())
+  costumerId String @db.VarChar
   address String @db.VarChar
   number String @db.VarChar
   city String @db.VarChar
@@ -109,7 +110,6 @@ model Address {
   cep String @db.VarChar
   isDefault Boolean @db.Boolean
 
-  costumerId String @db.VarChar
   costumers Costumer @relation(fields: [costumerId], references: [id])
 
   orders Order[]
@@ -119,21 +119,21 @@ model Address {
 
 model PaymentData {
   id String @db.VarChar @id @default(uuid()) 
+  costumerId String @db.VarChar
+  paymentMethodType String @db.VarChar
   provider String @db.VarChar
   number String @db.VarChar
   expireDate DateTime @db.Date
   isDefault Boolean @db.Boolean
+  createdBy String @db.VarChar
   createdAt DateTime @default(now())
 
   costumers Costumer @relation(fields: [costumerId], references: [id])
-  costumerId String @db.VarChar
 
   paymentMethods PaymentMethod @relation(fields: [paymentMethodType], references: [type])
-  paymentMethodType String @db.VarChar
 
   orders Order[]
   @@map("paymentDatas")
-
 }
 
 model PaymentMethod {
@@ -143,13 +143,13 @@ model PaymentMethod {
 
 model ProductDetails {
   id String @db.VarChar @id @default(uuid())
+  productId String @db.VarChar
   weight Decimal @db.Decimal(3,1)
   height Decimal @db.Decimal(4,1)
   width Decimal @db.Decimal(4,1)
   length Decimal @db.Decimal(4,1)
   manufacturer String @db.VarChar
 
-  productId String @db.VarChar
   products Product @relation(fields: [productId], references: [id])
 
   @@map("productDetails")
@@ -157,9 +157,10 @@ model ProductDetails {
 
 model SalesInfo {
   sales Int @db.Integer
-  createdAt DateTime @default(now())
-
   productId String @db.VarChar @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
   products Product @relation(fields: [productId], references: [id])
 
   @@map("salesInfos")
@@ -172,6 +173,7 @@ model Category {
   parentCategoryId String? @db.VarChar
   parentCategory Category? @relation("parentCategories",fields: [parentCategoryId], references: [id])
   childCategory Category[] @relation("parentCategories")
+  createdBy String @db.VarChar
 
   products Product[]
   promotions CategoryPromotion[]
@@ -185,6 +187,8 @@ model Promotion {
   discoutRate Int @db.Integer
   startDate DateTime @db.Date
   endDate DateTime @db.Date
+  createdBy String @db.VarChar
+  updatedBy String @db.VarChar
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
@@ -194,12 +198,16 @@ model Promotion {
 
 model CategoryPromotion {
   id String @db.VarChar @id @default(uuid())
-  name String @db.VarChar
-
   categoryId String @db.VarChar
+  promotionId String @db.VarChar
+  name String @db.VarChar
+  createdBy String @db.VarChar
+  updatedBy String @db.VarChar
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
   categories Category @relation(fields: [categoryId], references: [id])
 
-  promotionId String @db.VarChar
   promotions Promotion @relation(fields: [promotionId], references: [id])
 
   @@map("categoryPromotions")

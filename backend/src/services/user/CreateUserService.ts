@@ -14,7 +14,7 @@ interface CreateUser {
 class CreateUserService {
   async execute({name, surname, cpf, mobile, email, password, role}: CreateUser) {
     
-    if(!name || !surname || !cpf || !mobile || !email || !password || !role ) {
+    if(!name || !surname || !cpf || !mobile || !email || !password ) {
       throw new Error("Dados faltantes.")
     }
 

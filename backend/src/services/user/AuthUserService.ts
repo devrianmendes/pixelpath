@@ -10,6 +10,10 @@ interface AuthUserInterface {
 class AuthUserService {
   async execute({ email, password }: AuthUserInterface) {
 
+    if(!email || !password) {
+      throw new Error("Dados não informados.")
+    }
+
     const user = await prismaClient.costumer.findFirst({ //VERIFICANDO SE O EMAIL INFORMADO EXISTE CADASTRADO NO BANCO DE DADOS
       where: {
         email: email,
@@ -29,6 +33,7 @@ class AuthUserService {
       {
         name: user.name,
         email: user.email,
+        role: user.role
       },
       process.env.JWT_SECRET,
       {
@@ -41,6 +46,7 @@ class AuthUserService {
       id: user.id,
       name: user.name,
       email: user.email,
+      role: user.role,
       token: token
     };
   }

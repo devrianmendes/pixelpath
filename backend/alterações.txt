@@ -5,9 +5,12 @@ revisar todos os tipos de dados do banco de dados - feito
 
 
 
-
 criada a tabela role que irá definir permissões (será necessário injetar a role no token) - feito
 incluir id no paymentMethod - o type tá como id, vamo ver como fica
+
+
+
+incluir createdby nos services feitos por admin(alteração feita, falta rodar o migrate. tem que apagar tudo pra rodar)
 
 
 

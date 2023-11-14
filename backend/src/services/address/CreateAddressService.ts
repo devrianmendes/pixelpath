@@ -5,13 +5,13 @@ interface CreateAddress {
   number: string,
   city: string,
   state: string,
-  cep: number,
+  cep: string,
   costumerId: string
+  isDefault: boolean
 }
 
 class CreateAddressService {
-  async execute({address, number, city, state, cep, costumerId}: CreateAddress) {
-    console.log(address, number, city, state, cep, costumerId, "service")
+  async execute({address, number, city, state, cep, costumerId, isDefault}: CreateAddress) {
   
     const create = await prismaClient.address.create({
       data: {
@@ -20,7 +20,8 @@ class CreateAddressService {
         city: city,
         state: state,
         cep: cep,
-        costumerId: costumerId
+        costumerId: costumerId,
+        isDefault: isDefault
       }
     })
     return create;
