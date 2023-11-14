@@ -13,18 +13,21 @@ import CreateProductController from "./controllers/product/CreateProductControll
 
 import isAuthenticated from "./middlewares/isAuthenticated";
 import isAdmin from "./middlewares/isAdmin";
+import UpdateProductController from "./controllers/product/UpdateProductController";
 
 const router = Router();
 
 router.post("/createuser", new CreateUserController().handle);
 router.post("/session", new AuthUserController().handle);
 router.get("/me", isAuthenticated, new DetailUserController().handle);
-router.put("/updateuser", isAuthenticated, new UpdateUserController().handle)
+router.put("/updateuser", isAuthenticated, new UpdateUserController().handle);
 
-router.post("/createaddress", isAuthenticated, new CreateAddressController().handle)
+router.post("/createaddress", isAuthenticated, new CreateAddressController().handle);
+
 router.post("/createcategory", isAuthenticated, isAdmin, new CreateCategoryController().handle);
 router.delete("/deletecategory", isAuthenticated, isAdmin, new DeleteCategoryController().handle);
 
-router.post("/createproduct", isAuthenticated, isAdmin, new CreateProductController().handle)
+router.post("/createproduct", isAuthenticated, isAdmin, new CreateProductController().handle);
+router.put("/updateproduct", isAuthenticated, isAdmin, new UpdateProductController().handle);
 
 export { router };

@@ -15,6 +15,7 @@ interface CreateProduct {
   width: number;
   lenght: number;
   manufacturer: string;
+  user_id: string;
 }
 
 class CreateProductService {
@@ -33,6 +34,7 @@ class CreateProductService {
     width,
     lenght,
     manufacturer,
+    user_id
   }: CreateProduct) {
     if (
       !name ||
@@ -51,17 +53,6 @@ class CreateProductService {
     ) {
       throw new Error("Preencha todos os dado necessários.");
     } else {
-      //   console.log(
-      //     "name:", name,
-      //     "description", description,
-      //     "costPrice", costPrice,
-      //     "sellPrice", sellPrice,
-      //     "banner", banner,
-      //     "quantity", quantity,
-      //     "discountRate", discountRate,
-      //     "published", published,
-      //     "categoryId", typeof(categoryId)
-      //   )
       const createProduct = await prismaClient.product.create({
         data: {
           name: name,
@@ -73,6 +64,8 @@ class CreateProductService {
           discountRate: discountRate,
           published: published,
           categoryId: categoryId,
+          createdBy: user_id,
+          updatedBy: user_id
         },
       });
 
@@ -83,9 +76,9 @@ class CreateProductService {
           width: width,
           length: lenght,
           manufacturer: manufacturer,
-          productId: createProduct.id
-        }
-      })
+          productId: createProduct.id,
+        },
+      });
       return [createProduct, createProductDetails];
     }
   }

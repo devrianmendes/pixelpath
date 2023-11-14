@@ -1,6 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-//yarn prisma migrate dev
+//  yarn prisma migrate dev
 
 generator client {
   provider = "prisma-client-js"
@@ -143,7 +143,7 @@ model PaymentMethod {
 
 model ProductDetails {
   id String @db.VarChar @id @default(uuid())
-  productId String @db.VarChar
+  productId String @db.VarChar @unique
   weight Decimal @db.Decimal(3,1)
   height Decimal @db.Decimal(4,1)
   width Decimal @db.Decimal(4,1)

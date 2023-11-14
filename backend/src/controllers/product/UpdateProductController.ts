@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
-import CreateProductService from "../../services/product/CreateProductService";
+import UpdateProductService from "../../services/product/UpdateProductService";
 
-class CreateProductController {
+class UpdateProductController {
   async handle(req: Request, res: Response) {
     const {
+      id,
       name,
       description,
       costPrice,
@@ -20,10 +21,10 @@ class CreateProductController {
       manufacturer
     } = req.body;
 
-    const user_id = req.user_id;
-
-    const createProductService = new CreateProductService();
-    const product = await createProductService.execute({
+    const updateProduct = new UpdateProductService();
+    
+    const product = await updateProduct.execute({
+      id,
       name,
       description,
       costPrice,
@@ -37,12 +38,11 @@ class CreateProductController {
       height,
       width,
       lenght,
-      manufacturer,
-      user_id
+      manufacturer
     });
 
-    return res.json(product);
+    return res.json(product)
   }
 }
 
-export default CreateProductController;
+export default UpdateProductController;
