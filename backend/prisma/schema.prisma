@@ -156,8 +156,8 @@ model ProductDetails {
 }
 
 model SalesInfo {
-  sales Int @db.Integer
   productId String @db.VarChar @id
+  sales Int @db.Integer
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 

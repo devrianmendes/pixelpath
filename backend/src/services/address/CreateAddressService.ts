@@ -12,7 +12,7 @@ interface CreateAddress {
 
 class CreateAddressService {
   async execute({address, number, city, state, cep, costumerId, isDefault}: CreateAddress) {
-  
+
     const create = await prismaClient.address.create({
       data: {
         address: address,

@@ -6,10 +6,10 @@ criada a tabela role que irá definir permissões (será necessário injetar a r
 aparentemente só da pra pesquiser o item pela chave primaria. acrescenteu @unique ao productId pra ver se assim dá pra procurar - feito
 incluir createdby nos services feitos por admin(alteração feita, falta rodar o migrate. tem que apagar tudo pra rodar) - feito
 
+falta fazer verificação de existencia, entre outras verificações em varios services - feito (eu acho)
 
 
 incluir id no paymentMethod - o type tá como id, vamo ver como fica
-
 
 
 

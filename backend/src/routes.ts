@@ -14,6 +14,8 @@ import CreateProductController from "./controllers/product/CreateProductControll
 import isAuthenticated from "./middlewares/isAuthenticated";
 import isAdmin from "./middlewares/isAdmin";
 import UpdateProductController from "./controllers/product/UpdateProductController";
+import CreatePaymentMethodController from "./controllers/paymentMethod/CreatePaymentMethodController";
+import DeleteProductController from "./controllers/product/DeleteProductController";
 
 const router = Router();
 
@@ -29,5 +31,8 @@ router.delete("/deletecategory", isAuthenticated, isAdmin, new DeleteCategoryCon
 
 router.post("/createproduct", isAuthenticated, isAdmin, new CreateProductController().handle);
 router.put("/updateproduct", isAuthenticated, isAdmin, new UpdateProductController().handle);
+router.delete("/deleteproduct", isAuthenticated, isAdmin, new DeleteProductController().handle)
+
+router.post("/createmethod", isAuthenticated, isAdmin, new CreatePaymentMethodController().handle);
 
 export { router };
