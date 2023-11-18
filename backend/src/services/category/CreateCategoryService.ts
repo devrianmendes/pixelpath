@@ -42,7 +42,7 @@ class CreateCategoryService {
     //   //E cria como filha
       const category = await prismaClient.category.create({
         data: {
-          name: name,
+          name: name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase(),
           parentCategoryId: id,
           createdBy: user_id
         }

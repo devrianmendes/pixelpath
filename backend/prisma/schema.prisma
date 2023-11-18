@@ -26,7 +26,7 @@ model Costumer {
   roles Role @relation(fields: [role], references: [name])
 
   addresses Address[]
-  paymentData PaymentData[]
+  // paymentData PaymentData[]
   orders Order[]
   cart Cart[]
   @@map("costumers")
@@ -60,7 +60,7 @@ model Order {
   id String @db.VarChar @id @default(uuid())
   costumerId String @db.VarChar
   addressId String @db.VarChar
-  paymentDataId String @db.VarChar
+  // paymentDataId String @db.VarChar
   total Decimal @db.Decimal(7,2)
   status String @db.VarChar
   createdAt DateTime @default(now())
@@ -68,7 +68,7 @@ model Order {
 
   costumers Costumer @relation(fields: [costumerId], references: [id])
   Addresses Address @relation(fields: [addressId], references: [id])
-  paymentData PaymentData @relation(fields: [paymentDataId], references: [id])
+  // paymentData PaymentData @relation(fields: [paymentDataId], references: [id])
 
   cart Cart[]
 
@@ -117,28 +117,30 @@ model Address {
   @@map("addresses")
 }
 
-model PaymentData {
-  id String @db.VarChar @id @default(uuid()) 
-  costumerId String @db.VarChar
-  paymentMethodType String @db.VarChar
-  provider String @db.VarChar
-  number String @db.VarChar
-  expireDate DateTime @db.Date
-  isDefault Boolean @db.Boolean
-  createdBy String @db.VarChar
-  createdAt DateTime @default(now())
+// model PaymentData {
+//   id String @db.VarChar @id @default(uuid()) 
+//   costumerId String @db.VarChar
+//   paymentMethodType String @db.VarChar
+//   provider String @db.VarChar
+//   number String @db.VarChar
+//   expireDate DateTime @db.Date
+//   isDefault Boolean @db.Boolean
+//   createdBy String @db.VarChar
+//   createdAt DateTime @default(now())
 
-  costumers Costumer @relation(fields: [costumerId], references: [id])
+//   costumers Costumer @relation(fields: [costumerId], references: [id])
 
-  paymentMethods PaymentMethod @relation(fields: [paymentMethodType], references: [type])
+//   paymentMethods PaymentMethod @relation(fields: [paymentMethodType], references: [type])
 
-  orders Order[]
-  @@map("paymentDatas")
-}
+//   orders Order[]
+//   @@map("paymentDatas")
+// }
 
 model PaymentMethod {
   type String @db.VarChar @id
-  paymentDatas PaymentData[]
+  // paymentDatas PaymentData[]
+
+  @@map("paymentMethods")
 }
 
 model ProductDetails {
