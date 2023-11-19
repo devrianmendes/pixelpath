@@ -18,6 +18,7 @@ import CreatePaymentMethodController from "./controllers/paymentMethod/CreatePay
 import DeleteProductController from "./controllers/product/DeleteProductController";
 import ListByCategoryController from "./controllers/category/ListByCategoryController";
 import ListProductByNameController from "./controllers/product/ListProductByNameController";
+import CreatePromotionController from "./controllers/promotion/CreatePromotionController";
 // import CreatePaymentDataController from "./controllers/paymentData/CreatePaymentDataController";
 
 const router = Router();
@@ -40,4 +41,6 @@ router.get("/listproduct", new ListProductByNameController().handle)
 
 router.post("/createmethod", isAuthenticated, isAdmin, new CreatePaymentMethodController().handle);
 // router.post("/createdata", isAuthenticated, new CreatePaymentDataController().handle)
+
+router.post("/createpromotion", isAuthenticated, isAdmin, new CreatePromotionController().handle);
 export { router };

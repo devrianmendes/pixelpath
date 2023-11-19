@@ -1,3 +1,4 @@
+import CustomError from "../../error/CustomError";
 import prismaClient from "../../prisma";
 
 interface CreateCategory {
@@ -7,46 +8,58 @@ interface CreateCategory {
 }
 
 class CreateCategoryService {
-  async execute({name, parentName, user_id}: CreateCategory) {
+  async execute({ name, parentName, user_id }: CreateCategory) {
+    let err = new CustomError;
+    let casedName = name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+    let casedParentName: string;
+    parentName
+      ? (casedParentName = parentName
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase())
+      : null;
 
-    //Verificando se o nome da categoria ja existe no banco de dados
-    const alreadyExist = await prismaClient.category.findFirst({ 
+    // Verificando se o nome da categoria ja existe no banco de dados
+    const alreadyExist = await prismaClient.category.findFirst({
       where: {
-        name: name
-      }
-    })
+        name: casedName,
+      },
+    });
 
-    if(alreadyExist) {
-      throw new Error("Essa categoria já existe.");
+    if (alreadyExist) {
+      err.status = 401;
+      err.message = "Categoria já existente.";
+      throw err;
     }
-    
+
     // //Criando a categoria caso não seja filha
-    if(!parentName) {
+    if (!casedParentName) {
       const category = await prismaClient.category.create({
         data: {
-          name: name,
-          createdBy: user_id
-        }
-      })
+          name: casedName,
+          createdBy: user_id,
+        },
+      });
       return category;
-
     } else {
-    
-    //   //Caso seja filha, pega o id da categoria mãe
+      //Caso seja filha, pega o id da categoria mãe
       const { id } = await prismaClient.category.findFirst({
         where: {
-          name: parentName
-        }
-      })
+          name: casedParentName,
+        },
+      });
 
-    //   //E cria como filha
+      //E cria como filha
       const category = await prismaClient.category.create({
         data: {
-          name: name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase(),
+          name: casedName,
           parentCategoryId: id,
-          createdBy: user_id
-        }
-      })
+          createdBy: user_id,
+        },
+      });
       return category;
     }
   }

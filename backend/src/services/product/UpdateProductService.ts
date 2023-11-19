@@ -36,40 +36,65 @@ class UpdateProductService {
     lenght,
     manufacturer,
   }: UpdateProduct) {
-    
-    const updateProduct = await prismaClient.product.update({
-      where: {
-        id: id,
-      },
-      data: {
-        name: name,
-        description: description,
-        costPrice: costPrice,
-        sellPrice: sellPrice,
-        banner: banner,
-        quantity: quantity,
-        discountRate: discountRate,
-        published: published,
-        categoryId: categoryId,
-      },
-    });
+    let casedName = "";
+    let casedDescription = "";
+    let casedManufacturer = "";
 
-    console.log(updateProduct)
-    const updateDetails = await prismaClient.productDetails.update({
-      where: {
-        productId: id,
-      }
-      ,
-      data: {
-        weight: weight,
-        height: height,
-        width: width,
-        length: lenght,
-        manufacturer: manufacturer,
-      }
-    });
+    if (name) {
+      casedName = name
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+    }
+    if (description) {
+      casedDescription = description
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+    }
+    if (manufacturer) {
+      casedManufacturer = manufacturer
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+    }
 
-    return[updateProduct, updateDetails]
+    try {
+      const updateProduct = await prismaClient.product.update({
+        where: {
+          id: id,
+        },
+        data: {
+          name: casedName,
+          description: casedDescription,
+          costPrice: costPrice,
+          sellPrice: sellPrice,
+          banner: banner,
+          quantity: quantity,
+          discountRate: discountRate,
+          published: published,
+          categoryId: categoryId,
+        },
+      });
+
+      const updateDetails = await prismaClient.productDetails.update({
+        where: {
+          productId: id,
+        },
+        data: {
+          productId: id,
+          weight: weight,
+          height: height,
+          width: width,
+          length: lenght,
+          manufacturer: casedManufacturer,
+        },
+      });
+
+      return [updateProduct, updateDetails];
+    } catch (err) {
+      return err;
+    }
   }
 }
 

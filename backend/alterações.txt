@@ -13,10 +13,6 @@ incluir id no paymentMethod - o type tá como id, vamo ver como fica
 
 validação de cpf, validação de email, validação de cartão
 
-incluir cvc no paymentData, remover createdBy (paymentData foi removido para não armazenar informações sobre cartão) falta rodar migrate
+incluir cvc no paymentData, remover createdBy (paymentData foi removido para não armazenar informações sobre cartão) / corrigido o nome discountRate na tabela promotion -  falta rodar migrate
 
-
-
-
-
-
+revisar todos os selects

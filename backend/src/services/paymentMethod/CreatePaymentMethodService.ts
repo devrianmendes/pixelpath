@@ -1,25 +1,36 @@
+import CustomError from "../../error/CustomError";
 import prismaClient from "../../prisma";
 
 class CreatePaymentMethodService {
-  async execute(type: string){
+  async execute(type: string) {
+    let err = new CustomError();
+    const casedType = type
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
 
-    const exist = await prismaClient.paymentMethod.findFirst({
-      where: {
-        type: type
+    try {
+      const exist = await prismaClient.paymentMethod.findFirst({
+        where: {
+          type: type,
+        },
+      });
+
+      if (exist) {
+        err.status = 404;
+        err.message = "Este método de pagamento já existe.";
+        throw err;
       }
-    })
 
-    if(exist) {
-      console.log(exist)
-      throw new Error("Método já existente.");
+      const createMethod = await prismaClient.paymentMethod.create({
+        data: {
+          type: casedType,
+        },
+      });
+      return createMethod;
+    } catch (error) {
+      return err;
     }
-
-    const createMethod = await prismaClient.paymentMethod.create({
-      data: {
-        type: type.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase()
-      }
-    });
-    return createMethod;
   }
 }
 

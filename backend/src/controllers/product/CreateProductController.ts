@@ -17,31 +17,39 @@ class CreateProductController {
       height,
       width,
       lenght,
-      manufacturer
+      manufacturer,
     } = req.body;
 
     const user_id = req.user_id;
 
     const createProductService = new CreateProductService();
-    const product = await createProductService.execute({
-      name,
-      description,
-      costPrice,
-      sellPrice,
-      banner,
-      quantity,
-      discountRate,
-      published,
-      categoryId,
-      weight,
-      height,
-      width,
-      lenght,
-      manufacturer,
-      user_id
-    });
+    try {
+      const product = await createProductService.execute({
+        name,
+        description,
+        costPrice,
+        sellPrice,
+        banner,
+        quantity,
+        discountRate,
+        published,
+        categoryId,
+        weight,
+        height,
+        width,
+        lenght,
+        manufacturer,
+        user_id,
+      });
 
-    return res.json(product);
+      return res.json(product);
+    } catch (err) {
+      if (err.status) {
+        return res.status(err.status).end(err.message);
+      } else {
+        return err;
+      }
+    }
   }
 }
 

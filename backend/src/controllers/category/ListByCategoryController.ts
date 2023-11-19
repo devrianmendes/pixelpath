@@ -3,14 +3,20 @@ import ListByCategoryService from "../../services/category/ListByCategoryService
 
 class ListByCategoryController {
   async handle(req: Request, res: Response) {
-    const {name} = req.body;
-
-    // console.log(name)
+    const { name } = req.body;
     const listByCategory = new ListByCategoryService();
 
-    const list = await listByCategory.execute(name);
+    try {
+      const list = await listByCategory.execute(name);
 
-    return res.json(list);
+      return res.json(list);
+    } catch (err) {
+      if (err.status) {
+        return res.status(err.status).end(err.message);
+      } else {
+        return err;
+      }
+    }
   }
 }
 

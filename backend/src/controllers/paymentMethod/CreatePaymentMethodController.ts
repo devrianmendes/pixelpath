@@ -3,14 +3,21 @@ import CreatePaymentMethodService from "../../services/paymentMethod/CreatePayme
 
 class CreatePaymentMethodController {
   async handle(req: Request, res: Response) {
-
-    const {type} = req.body;
+    const { type } = req.body;
 
     const createMethod = new CreatePaymentMethodService();
 
-    const method = await createMethod.execute(type);
-    
-    return res.json(method);
+    try {
+      const method = await createMethod.execute(type);
+
+      return res.json(method);
+    } catch (err) {
+      if (err.status) {
+        return res.status(err.status).end(err.message);
+      } else {
+        return err;
+      }
+    }
   }
 }
 

@@ -1,23 +1,32 @@
-import prismaClient from "../../prisma";  
+import prismaClient from "../../prisma";
 
 class ListByCategoryService {
   async execute(name: string) {
-    const id = await prismaClient.category.findFirst({
-      where: {
-        name: name
-      }
-    });
-    
-    const list = await prismaClient.product.findMany({
-      where: {
-        categoryId: id.id
-      },
-      include: {
-        productDetails: true
-      }
-    });
-    
-    return list;
+    const casedName = name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+
+    try {
+      const id = await prismaClient.category.findFirst({
+        where: {
+          name: casedName,
+        },
+      });
+
+      const list = await prismaClient.product.findMany({
+        where: {
+          categoryId: id.id,
+        },
+        include: {
+          productDetails: true,
+        },
+      });
+
+      return list;
+    } catch (err) {
+      return err;
+    }
   }
 }
 

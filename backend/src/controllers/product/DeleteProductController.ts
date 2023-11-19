@@ -7,9 +7,18 @@ class DeleteProductController {
 
     const delProduct = new DeleteProductService();
 
-    const del = delProduct.execute(id);
-
-    return res.json(del);
+    try {
+      const del = await delProduct.execute(id);
+  
+      return res.json(del);
+      
+    } catch (err) {
+      if (err.status) {
+        return res.status(err.status).end(err.message);
+      } else {
+        return err;
+      }
+    }
   }
 }
 

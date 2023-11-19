@@ -3,13 +3,21 @@ import ListProductByNameService from "../../services/product/ListProductByNameSe
 
 class ListProductByNameController {
   async handle(req: Request, res: Response) {
-    const {search} = req.body;
-    
+    const { search } = req.body;
+
     const serviceInstance = new ListProductByNameService();
 
-    const list = await serviceInstance.execute(search);
+    try {
+      const list = await serviceInstance.execute(search);
 
-    return res.json(list);
+      return res.json(list);
+    } catch (err) {
+      if (err.status) {
+        return res.status(err.status).end(err.message);
+      } else {
+        return err;
+      }
+    }
   }
 }
 

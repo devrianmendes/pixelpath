@@ -3,16 +3,23 @@ import UpdateUserService from "../../services/user/UpdateUserService";
 
 class UpdateUserController {
   async handle(req: Request, res: Response) {
-
-    const {mobile, password} = req.body;
+    const { mobile, password } = req.body;
 
     const user_id = req.user_id;
 
-    const updateUser = new UpdateUserService;
+    const updateUser = new UpdateUserService();
 
-    const update = await updateUser.execute({user_id, mobile, password})
+    try {
+      const update = await updateUser.execute({ user_id, mobile, password });
 
-    return res.json(update)
+      return res.json(update);
+    } catch (err) {
+      if (err.status) {
+        return res.status(err.status).end(err.message);
+      } else {
+        return err;
+      }
+    }
   }
 }
 
