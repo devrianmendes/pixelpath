@@ -5,14 +5,13 @@ revisar todos os tipos de dados do banco de dados - feito
 criada a tabela role que irá definir permissões (será necessário injetar a role no token) - feito
 aparentemente só da pra pesquiser o item pela chave primaria. acrescenteu @unique ao productId pra ver se assim dá pra procurar - feito
 incluir createdby nos services feitos por admin(alteração feita, falta rodar o migrate. tem que apagar tudo pra rodar) - feito
-
 falta fazer verificação de existencia, entre outras verificações em varios services - feito (eu acho)
-
-
+revisar todos os selects - feito
 incluir id no paymentMethod - o type tá como id, vamo ver como fica
+incluir cvc no paymentData, remover createdBy (paymentData foi removido para não armazenar informações sobre cartão) / corrigido o nome discountRate na tabela promotion -  feito
+
+
+
 
 validação de cpf, validação de email, validação de cartão
 
-incluir cvc no paymentData, remover createdBy (paymentData foi removido para não armazenar informações sobre cartão) / corrigido o nome discountRate na tabela promotion -  falta rodar migrate
-
-revisar todos os selects

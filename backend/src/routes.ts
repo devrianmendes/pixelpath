@@ -19,6 +19,8 @@ import DeleteProductController from "./controllers/product/DeleteProductControll
 import ListByCategoryController from "./controllers/category/ListByCategoryController";
 import ListProductByNameController from "./controllers/product/ListProductByNameController";
 import CreatePromotionController from "./controllers/promotion/CreatePromotionController";
+import UpdatePromotionController from "./controllers/promotion/UpdatePromotionController";
+import DeletePromotionController from "./controllers/promotion/DeletePromotionController";
 // import CreatePaymentDataController from "./controllers/paymentData/CreatePaymentDataController";
 
 const router = Router();
@@ -43,4 +45,7 @@ router.post("/createmethod", isAuthenticated, isAdmin, new CreatePaymentMethodCo
 // router.post("/createdata", isAuthenticated, new CreatePaymentDataController().handle)
 
 router.post("/createpromotion", isAuthenticated, isAdmin, new CreatePromotionController().handle);
+router.put("/updatepromotion", isAuthenticated, isAdmin, new UpdatePromotionController().handle);
+router.delete("/deletepromotion", isAuthenticated, isAdmin, new DeletePromotionController().handle);
+
 export { router };

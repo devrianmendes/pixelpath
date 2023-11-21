@@ -39,7 +39,7 @@ class CreatePromotionService {
         data: {
           name: casedName,
           description: casedDescription,
-          discoutRate: discountRate,
+          discountRate: discountRate,
           startDate: startDate,
           endDate: endDate,
           createdBy: user_id,
