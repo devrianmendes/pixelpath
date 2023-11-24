@@ -14,7 +14,7 @@ class CreateCategoryService {
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase();
-    let casedParentName: string;
+    let casedParentName: string | undefined;
     parentName
       ? (casedParentName = parentName
           .normalize("NFD")
@@ -46,7 +46,7 @@ class CreateCategoryService {
       return category;
     } else {
       //Caso seja filha, pega o id da categoria mãe
-      const { id } = await prismaClient.category.findFirst({
+      const hasParent = await prismaClient.category.findFirst({
         where: {
           name: casedParentName,
         },
@@ -56,7 +56,7 @@ class CreateCategoryService {
       const category = await prismaClient.category.create({
         data: {
           name: casedName,
-          parentCategoryId: id,
+          parentCategoryId: hasParent!.id,
           createdBy: user_id,
         },
       });

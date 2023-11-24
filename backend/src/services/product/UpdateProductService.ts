@@ -36,9 +36,9 @@ class UpdateProductService {
     lenght,
     manufacturer,
   }: UpdateProduct) {
-    let casedName = "";
-    let casedDescription = "";
-    let casedManufacturer = "";
+    let casedName: string | undefined;
+    let casedDescription: string | undefined;
+    let casedManufacturer: string | undefined;
 
     if (name) {
       casedName = name

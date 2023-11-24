@@ -15,10 +15,10 @@ class CreateCategoryController {
       });
       return res.json(category);
     } catch (err) {
-      if (err.status) {
-        return res.status(err.status).end(err.message);
+      if (err instanceof Error && err.message) {
+        return res.status(500).end(err.message);
       } else {
-        return err;
+        return res.status(500).end("Erro interno do servidor");
       }
     }
   }

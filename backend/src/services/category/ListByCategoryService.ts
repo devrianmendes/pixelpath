@@ -16,7 +16,7 @@ class ListByCategoryService {
 
       const list = await prismaClient.product.findMany({
         where: {
-          categoryId: id.id,
+          categoryId: id!.id,
         },
         include: {
           productDetails: true,

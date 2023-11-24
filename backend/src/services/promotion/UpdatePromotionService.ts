@@ -20,8 +20,8 @@ class UpdatePromotionService {
     user_id,
   }: UpdatePromotion) {
     try {
-      let casedName = "";
-      let casedDescription = "";
+      let casedName: string | undefined;
+      let casedDescription: string | undefined;
 
       name
         ? (casedName = name

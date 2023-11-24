@@ -15,7 +15,7 @@ export default function isAuthenticated(req: Request, res: Response, next: NextF
   const [, token] = authToken.split(" ");
 
   try {
-    const { sub } = verify(token, process.env.JWT_SECRET) as PayLoad;
+    const { sub } = verify(token, process.env.JWT_SECRET as string) as PayLoad;
     
     req.user_id = sub;
     

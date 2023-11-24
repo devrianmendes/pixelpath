@@ -15,7 +15,7 @@ export default function isAdmin (req: Request, res: Response, next: NextFunction
   const [, token] = authToken.split(" ");
 
   try {
-    const { role } = verify(token, process.env.JWT_SECRET) as PayLoad;
+    const { role } = verify(token, process.env.JWT_SECRET as string) as PayLoad;
 
     role === "admin" ? next() : res.status(401).end()
     

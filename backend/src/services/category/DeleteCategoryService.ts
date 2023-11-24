@@ -2,7 +2,7 @@ import CustomError from "../../error/CustomError";
 import prismaClient from "../../prisma";
 
 class DeleteCategoryService {
-  async execute({ name }) {
+  async execute({name}: {name: string}) {
     //Variável que irá tratar os erros
     let err = new CustomError();
     const casedName = name

@@ -13,5 +13,9 @@ incluir cvc no paymentData, remover createdBy (paymentData foi removido para nã
 
 
 
-validação de cpf, validação de email, validação de cartão
+
+falta fazer as tabelas cart, order, salesInfo. mas vou deixar pra fazer após o frontend para entender melhor
+  a principio é pra salvar os itens do usuário não logado no localstorage, e quando logar ou quando logado no banco de dados
+
+criar um arquivo para a função de normalize e melhorar o arquivo de erro para receber a msg e o código dentro de parametros
 
